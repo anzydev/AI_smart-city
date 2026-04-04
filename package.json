@@ -1,0 +1,8 @@
+{
+  "name": "smart-city-ai-dashboard",
+  "version": "1.0.0",
+  "description": "Smart City AI Citizen Dashboard with live data and context-grounded chatbot",
+  "scripts": {
+    "build": "node generate-config.js"
+  }
+}

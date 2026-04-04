@@ -12,21 +12,29 @@
 const fs = require('fs');
 const path = require('path');
 
-// --- Read .env ---
+// --- Read token: try .env first, then system environment variable (for Vercel/CI) ---
+let token = '';
+
 const envPath = path.join(__dirname, '.env');
-if (!fs.existsSync(envPath)) {
-  console.error('❌  .env file not found! Create one with: HF_TOKEN=hf_your_token_here');
-  process.exit(1);
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf-8');
+  const match = envContent.match(/HF_TOKEN\s*=\s*(.+)/);
+  if (match && match[1].trim()) {
+    token = match[1].trim();
+    console.log('📄 Token read from .env file');
+  }
 }
 
-const envContent = fs.readFileSync(envPath, 'utf-8');
-const match = envContent.match(/HF_TOKEN\s*=\s*(.+)/);
-if (!match || !match[1].trim()) {
-  console.error('❌  HF_TOKEN not found in .env');
-  process.exit(1);
+// Fallback: read from system environment variable (Vercel sets this)
+if (!token && process.env.HF_TOKEN) {
+  token = process.env.HF_TOKEN.trim();
+  console.log('🌐 Token read from environment variable');
 }
 
-const token = match[1].trim();
+if (!token) {
+  console.error('❌  HF_TOKEN not found! Set it in .env or as an environment variable.');
+  process.exit(1);
+}
 
 // --- XOR cipher key ---
 const XOR_KEY = 'SmartCityAIDashboard2026';
