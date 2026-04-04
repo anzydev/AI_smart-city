@@ -17,43 +17,14 @@ let factData;
 // API ENDPOINTS
 // ============================================
 const API = {
-  weather: 'https://api.open-meteo.com/v1/forecast?latitude=18.52&longitude=73.86&current_weather=true',
+  weather: 'https://api.weatherapi.com/v1/current.json?key=114bf0aa682e43ae94292609260404&q=Pune',
   currency: 'https://open.er-api.com/v6/latest/USD',
   citizen: 'https://randomuser.me/api/',
   fact: 'https://uselessfacts.jsph.pl/api/v2/facts/random?language=en',
   llm: 'https://router.huggingface.co/v1/chat/completions',
 };
 
-// ============================================
-// WEATHER CODE → EMOJI / LABEL MAP
-// ============================================
-const WEATHER_MAP = {
-  0: { icon: '☀️', label: 'Clear sky' },
-  1: { icon: '🌤️', label: 'Mainly clear' },
-  2: { icon: '⛅', label: 'Partly cloudy' },
-  3: { icon: '☁️', label: 'Overcast' },
-  45: { icon: '🌫️', label: 'Fog' },
-  48: { icon: '🌫️', label: 'Depositing rime fog' },
-  51: { icon: '🌦️', label: 'Light drizzle' },
-  53: { icon: '🌦️', label: 'Moderate drizzle' },
-  55: { icon: '🌧️', label: 'Dense drizzle' },
-  61: { icon: '🌧️', label: 'Slight rain' },
-  63: { icon: '🌧️', label: 'Moderate rain' },
-  65: { icon: '🌧️', label: 'Heavy rain' },
-  71: { icon: '🌨️', label: 'Slight snow' },
-  73: { icon: '🌨️', label: 'Moderate snow' },
-  75: { icon: '❄️', label: 'Heavy snow' },
-  80: { icon: '🌦️', label: 'Rain showers' },
-  81: { icon: '🌧️', label: 'Moderate rain showers' },
-  82: { icon: '⛈️', label: 'Violent rain showers' },
-  95: { icon: '⛈️', label: 'Thunderstorm' },
-  96: { icon: '⛈️', label: 'Thunderstorm with hail' },
-  99: { icon: '⛈️', label: 'Thunderstorm with heavy hail' },
-};
 
-function getWeatherInfo(code) {
-  return WEATHER_MAP[code] || { icon: '🌡️', label: `Code ${code}` };
-}
 
 // ============================================
 // DOM REFERENCES
@@ -100,30 +71,30 @@ async function fetchWeather() {
     const res = await fetch(API.weather);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    const cw = data.current_weather;
+    const cw = data.current;
 
     // Update global state
     weatherData = {
-      temperature: cw.temperature,
-      windspeed: cw.windspeed,
-      weathercode: cw.weathercode,
+      temperature: cw.temp_c,
+      windspeed: cw.wind_kph,
+      weathercode: cw.condition.text,
     };
 
-    const info = getWeatherInfo(cw.weathercode);
+    const iconUrl = 'https:' + cw.condition.icon;
 
     weatherBody.innerHTML = `
-      <div class="weather-icon">${info.icon}</div>
+      <div class="weather-icon"><img src="${iconUrl}" alt="${cw.condition.text}" style="width:64px;height:64px;" /></div>
       <div class="data-row">
         <span class="data-label">Temperature</span>
-        <span class="data-value temp">${cw.temperature}°C</span>
+        <span class="data-value temp">${cw.temp_c}°C</span>
       </div>
       <div class="data-row">
         <span class="data-label">Wind Speed</span>
-        <span class="data-value">${cw.windspeed} km/h</span>
+        <span class="data-value">${cw.wind_kph} km/h</span>
       </div>
       <div class="data-row">
         <span class="data-label">Condition</span>
-        <span class="data-value">${info.label}</span>
+        <span class="data-value">${cw.condition.text}</span>
       </div>
     `;
   } catch (err) {
