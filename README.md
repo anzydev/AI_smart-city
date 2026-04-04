@@ -22,9 +22,9 @@
 
 | Feature | Description |
 |---------|-------------|
-| 🌤️ **Live Weather** | Real-time temperature, wind speed & conditions for Pune (via Open-Meteo API) |
+| 🌤️ **Live Weather** | Real-time temperature, wind speed & conditions for Pune (via WeatherAPI.com) |
 | 💱 **Currency Rates** | Live USD → INR, EUR, GBP exchange rates (via ExchangeRate API) |
-| 👤 **Citizen Profile** | Random citizen with photo, name, city & email (via RandomUser API) |
+| 👤 **Citizen Profile** | Random citizen with name, city & email (via JSONPlaceholder + pravatar) |
 | 💡 **City Fact** | Fun fact of the day displayed as a post-it note (via Useless Facts API) |
 | 🤖 **AI Chatbot** | Context-grounded assistant using Mistral-7B — answers **only** from dashboard data |
 | 🔐 **Secure Token** | HF token is XOR-encrypted + base64-encoded, never exposed in source |
@@ -141,9 +141,9 @@ Raw Token → XOR with key → Base64 encode → config.js (encrypted blob)
 
 | API | Endpoint | Data |
 |-----|----------|------|
-| **Open-Meteo** | `api.open-meteo.com/v1/forecast` | Temperature, wind, weather code |
+| **WeatherAPI.com** | `api.weatherapi.com/v1/current.json` | Temperature, wind, condition + icon |
 | **ExchangeRate** | `open.er-api.com/v6/latest/USD` | INR, EUR, GBP rates |
-| **RandomUser** | `randomuser.me/api/` | Name, photo, email, city |
+| **JSONPlaceholder** | `jsonplaceholder.typicode.com/users` | Name, email, city (+ pravatar image) |
 | **Useless Facts** | `uselessfacts.jsph.pl/api/v2/facts/random` | Random fun fact |
 | **HuggingFace** | `router.huggingface.co/v1/chat/completions` | Mistral-7B chat |
 
