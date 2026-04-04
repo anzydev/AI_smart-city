@@ -17,14 +17,23 @@ let factData;
 // API ENDPOINTS
 // ============================================
 const API = {
-  weather: 'https://api.weatherapi.com/v1/current.json?key=114bf0aa682e43ae94292609260404&q=Pune',
+  weather: 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/pune?unitGroup=metric&key=9PQBUPMC5M2RCBKDNAEWD6GXC&contentType=json&include=current',
   currency: 'https://open.er-api.com/v6/latest/USD',
   citizen: 'https://jsonplaceholder.typicode.com/users',
   fact: 'https://uselessfacts.jsph.pl/api/v2/facts/random?language=en',
   llm: 'https://router.huggingface.co/v1/chat/completions',
 };
 
-
+// Weather condition → emoji map
+const WEATHER_ICONS = {
+  'clear-day': '☀️', 'clear-night': '🌙',
+  'partly-cloudy-day': '⛅', 'partly-cloudy-night': '☁️',
+  'cloudy': '☁️', 'rain': '🌧️', 'showers-day': '🌦️',
+  'showers-night': '🌧️', 'thunder-rain': '⛈️',
+  'thunder-showers-day': '⛈️', 'thunder-showers-night': '⛈️',
+  'snow': '❄️', 'snow-showers-day': '🌨️', 'snow-showers-night': '🌨️',
+  'fog': '🌫️', 'wind': '💨', 'hail': '🧊',
+};
 
 // ============================================
 // DOM REFERENCES
@@ -71,30 +80,30 @@ async function fetchWeather() {
     const res = await fetch(API.weather);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    const cw = data.current;
+    const cw = data.currentConditions;
 
     // Update global state
     weatherData = {
-      temperature: cw.temp_c,
-      windspeed: cw.wind_kph,
-      weathercode: cw.condition.text,
+      temperature: cw.temp,
+      windspeed: cw.windspeed,
+      weathercode: cw.conditions,
     };
 
-    const iconUrl = 'https:' + cw.condition.icon;
+    const emoji = WEATHER_ICONS[cw.icon] || '🌡️';
 
     weatherBody.innerHTML = `
-      <div class="weather-icon"><img src="${iconUrl}" alt="${cw.condition.text}" style="width:64px;height:64px;" /></div>
+      <div class="weather-icon">${emoji}</div>
       <div class="data-row">
         <span class="data-label">Temperature</span>
-        <span class="data-value temp">${cw.temp_c}°C</span>
+        <span class="data-value temp">${cw.temp}°C</span>
       </div>
       <div class="data-row">
         <span class="data-label">Wind Speed</span>
-        <span class="data-value">${cw.wind_kph} km/h</span>
+        <span class="data-value">${cw.windspeed} km/h</span>
       </div>
       <div class="data-row">
         <span class="data-label">Condition</span>
-        <span class="data-value">${cw.condition.text}</span>
+        <span class="data-value">${cw.conditions}</span>
       </div>
     `;
   } catch (err) {
@@ -439,6 +448,13 @@ chatInput.addEventListener('keydown', (e) => {
 // INITIALIZE EVERYTHING ON LOAD
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
+  // Verify token loaded
+  if (!window.HF_TOKEN) {
+    console.warn('⚠️ HF_TOKEN not found — chatbot will not work. Run: node generate-config.js');
+  } else {
+    console.log('✅ HF_TOKEN loaded successfully (' + window.HF_TOKEN.length + ' chars)');
+  }
+
   fetchWeather();
   fetchCurrency();
   fetchCitizen();
