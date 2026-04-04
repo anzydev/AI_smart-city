@@ -19,7 +19,7 @@ let factData;
 const API = {
   weather: 'https://api.weatherapi.com/v1/current.json?key=114bf0aa682e43ae94292609260404&q=Pune',
   currency: 'https://open.er-api.com/v6/latest/USD',
-  citizen: 'https://randomuser.me/api/',
+  citizen: 'https://jsonplaceholder.typicode.com/users',
   fact: 'https://uselessfacts.jsph.pl/api/v2/facts/random?language=en',
   llm: 'https://router.huggingface.co/v1/chat/completions',
 };
@@ -158,14 +158,16 @@ async function fetchCitizen() {
     const res = await fetch(API.citizen);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    const user = data.results[0];
+    // Randomly select one user
+    const user = data[Math.floor(Math.random() * data.length)];
+    const image = `https://i.pravatar.cc/150?u=${user.email}`;
 
     // Update global state
     citizen = {
-      name: `${user.name.first} ${user.name.last}`,
+      name: user.name,
       email: user.email,
-      city: user.location.city,
-      image: user.picture.large,
+      city: user.address.city,
+      image: image,
     };
 
     citizenBody.innerHTML = `
