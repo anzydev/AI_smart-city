@@ -1,8 +1,5 @@
-# Environment variables (contains API tokens)
+# Environment variables (contains raw API token)
 .env
-
-# Generated config with obfuscated token
-config.js
 
 # OS files
 .DS_Store
