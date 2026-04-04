@@ -59,7 +59,7 @@ function _dk(encoded, key) {
   return result;
 }
 
-const HF_TOKEN = _dk(_ET, _EK);
+window.HF_TOKEN = _dk(_ET, _EK);
 `;
 
 const configPath = path.join(__dirname, 'config.js');

@@ -360,8 +360,8 @@ async function sendMessage() {
   if (!userQuestion) return;
 
   // Check if token is available from config.js
-  if (typeof HF_TOKEN === 'undefined' || !HF_TOKEN) {
-    appendErrorMessage('AI token not configured. Run: node generate-config.js');
+  if (!window.HF_TOKEN) {
+    appendErrorMessage('AI token not configured. Run: node generate-config.js (Also, hard refresh with Cmd+Shift+R!)');
     return;
   }
 
@@ -379,7 +379,7 @@ async function sendMessage() {
     const response = await fetch(API.llm, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${HF_TOKEN}`,
+        Authorization: `Bearer ${window.HF_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
