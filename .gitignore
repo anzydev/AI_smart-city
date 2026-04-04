@@ -1,0 +1,20 @@
+# Environment variables (contains API tokens)
+.env
+
+# Generated config with obfuscated token
+config.js
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+#text files
+pre-data.txt
+prompt.txt

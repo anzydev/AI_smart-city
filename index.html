@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Smart City AI Citizen Dashboard — Live weather, currency, citizen data and AI chatbot powered by real-time APIs." />
+  <title>Smart City AI Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+
+  <!-- ====== HEADER ====== -->
+  <header class="header">
+    <h1>🏙️ Smart City <span class="accent">AI</span> Dashboard</h1>
+    <p>Live data · Intelligent assistant · Citizen services</p>
+  </header>
+
+  <!-- ====== DASHBOARD GRID ====== -->
+  <main class="dashboard" id="dashboard">
+
+    <!-- WEATHER CARD -->
+    <section class="card tape" id="weatherCard">
+      <div class="card-header">
+        <h2><span class="icon">🌤️</span> Weather</h2>
+        <button class="btn-refresh" id="refreshWeather" type="button">↻ Refresh</button>
+      </div>
+      <div class="card-body" id="weatherBody">
+        <div class="skeleton lg"></div>
+        <div class="skeleton" style="width:80%"></div>
+        <div class="skeleton" style="width:60%"></div>
+      </div>
+    </section>
+
+    <!-- CURRENCY CARD -->
+    <section class="card tack" id="currencyCard">
+      <div class="card-header">
+        <h2><span class="icon">💱</span> Currency</h2>
+        <button class="btn-refresh" id="refreshCurrency" type="button">↻ Refresh</button>
+      </div>
+      <div class="card-body" id="currencyBody">
+        <div class="skeleton lg"></div>
+        <div class="skeleton" style="width:70%"></div>
+        <div class="skeleton" style="width:85%"></div>
+      </div>
+    </section>
+
+    <!-- CITIZEN CARD -->
+    <section class="card tape" id="citizenCard">
+      <div class="card-header">
+        <h2><span class="icon">👤</span> Citizen</h2>
+        <button class="btn-refresh" id="refreshCitizen" type="button">↻ Refresh</button>
+      </div>
+      <div class="card-body" id="citizenBody">
+        <div class="skeleton lg"></div>
+        <div class="skeleton" style="width:60%"></div>
+        <div class="skeleton" style="width:75%"></div>
+      </div>
+    </section>
+
+    <!-- FACT CARD -->
+    <section class="card tack" id="factCard">
+      <div class="card-header">
+        <h2><span class="icon">💡</span> City Fact</h2>
+        <button class="btn-refresh" id="refreshFact" type="button">↻ Refresh</button>
+      </div>
+      <div class="card-body" id="factBody">
+        <div class="skeleton lg"></div>
+        <div class="skeleton" style="width:90%"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====== NOTE ====== -->
+  <div class="dashboard-note">
+    <span class="note-icon">📝</span>
+    <p><strong>Note:</strong> If the <em>Citizen Profile</em> card doesn't show data, kindly hit the <strong>Refresh</strong> button 3–4 times — the API may take a moment to respond!</p>
+  </div>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    Built by Khushagra;
+  </footer>
+
+  <!-- ====== CHATBOT ====== -->
+  <button class="chat-toggle" id="chatToggle" type="button" aria-label="Open AI assistant">💬</button>
+
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+      <span>🤖 SmartCity Assistant</span>
+      <button class="close-btn" id="chatClose" type="button" aria-label="Close chat">✕</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-msg bot">
+        <div class="msg-label">Assistant</div>
+        Hey there! Ask me anything about the dashboard data — weather, currency, citizen info, or fun facts! 🏙️
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <input class="chat-input" id="chatInput" type="text" placeholder="Ask about the dashboard..."
+        autocomplete="off" />
+      <button class="chat-send" id="chatSend" type="button">Send</button>
+    </div>
+  </div>
+
+  <!-- config.js loads the obfuscated HF token (generated from .env) -->
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
