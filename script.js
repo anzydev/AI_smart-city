@@ -402,8 +402,6 @@ async function sendMessage() {
       }),
     });
 
-    removeTypingIndicator();
-
     if (!response.ok) {
       const errBody = await response.text();
       console.error('LLM API error:', response.status, errBody);
@@ -427,6 +425,7 @@ async function sendMessage() {
       botReply = 'Sorry, I could not generate a response. Please try again.';
     }
 
+    removeTypingIndicator();
     appendMessage(botReply, 'bot');
   } catch (err) {
     removeTypingIndicator();
